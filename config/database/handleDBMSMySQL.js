@@ -9,6 +9,7 @@ class handleDBMSMySQL {
 
         if(envFile){
             this._host = (typeof host !== "string" || host === null) ? envFile.host : host;
+            this._port = (typeof port !== "string" || port === null) ? envFile.port: port;
             this._database = (typeof database !== "string" || database === null) ? envFile.database : database;
             this._user = (typeof user !== "string" || user === null) ? envFile.user : user;
             this._password = (typeof password !== "string" || password === null) ? envFile.password : password;
@@ -18,9 +19,10 @@ class handleDBMSMySQL {
     connect(){
         this.connection = mysql.createConnection({
             host: this._host,
+            port: this._port,
             database: this._database,
             user: this._user,
-            password: this._password
+            password: this._password,
         });
     }
     query(sql, args){

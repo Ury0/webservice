@@ -17,7 +17,7 @@ class modelAccess {
         if (typeof hostname !== 'string' || hostname === null) this.destroy(hostname);
         if (typeof ip !== 'string' || ip === null) this.destroy(ip);
 
-        const table = 'access_log';
+        const table = 'access';
         const sqlInsert = `INSERT INTO ${this._envFile.database}.${table} (timestamp, hostname, ip) VALUES (?, ?, ?)`;
 
         try {
