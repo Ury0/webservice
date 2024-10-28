@@ -24,6 +24,13 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/access', accessRouter);
 
+console.log('Rotas registradas:');
+app._router.stack.forEach(function(r){
+    if (r.route && r.route.path){
+        console.log(r.route.path);
+    }
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

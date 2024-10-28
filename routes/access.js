@@ -5,6 +5,7 @@ const modelAccess = new ModelAccess();  // Instância da classe de modelo
 
 // Rota POST para registrar o acesso
 router.post('/access', async (req, res) => {
+    console.log("req post /accsess")
     try {
         const { hostname, ip } = req.body;
 
