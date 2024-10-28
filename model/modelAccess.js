@@ -1,7 +1,7 @@
 const fs = require('fs');
 const handleDBMSMySQL = require('../config/database/handleDBMSMySQL');
 
-class modelAccess {
+class ModelAccess {
     constructor() {
         this._handleDBMSMySQL = new handleDBMSMySQL();
         this._envFile = JSON.parse(fs.readFileSync('./config/server/env.json', 'utf8', 'r'));
@@ -16,11 +16,10 @@ class modelAccess {
         if (typeof timestamp !== 'string' || timestamp === null) this.destroy(timestamp);
         if (typeof hostname !== 'string' || hostname === null) this.destroy(hostname);
         if (typeof ip !== 'string' || ip === null) this.destroy(ip);
-
         const table = 'access';
         const sqlInsert = `INSERT INTO ${this._envFile.database}.${table} (timestamp, hostname, ip) VALUES (?, ?, ?)`;
-
         try {
+            console.log("acho q vai dar errado");
             await this._handleDBMSMySQL.query(sqlInsert, [timestamp, hostname, ip]);
         } catch (error) {
             if (error.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
@@ -37,4 +36,4 @@ class modelAccess {
     }
 }
 
-module.exports = modelAccess;
+module.exports = ModelAccess;
