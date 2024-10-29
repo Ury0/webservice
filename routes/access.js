@@ -22,5 +22,15 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Erro ao registrar o acesso', error });
     }
 });
+router.get('/:id', async (req, res) => { 
+    try { 
+        const id = req.params.id; 
+        const access = await modelAccess.readAccess(id); 
+        res.status(200).json(access); 
+    } catch (error) { 
+        console.error('Erro ao ler o acesso:', error); 
+        res.status(500).json({ message: 'Erro ao ler o acesso', error }); 
+    } 
+});
 
 module.exports = router;

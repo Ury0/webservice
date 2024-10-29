@@ -30,6 +30,17 @@ class ModelAccess {
             await this._handleDBMSMySQL.close().catch((err) => console.error('Erro ao fechar a conexão:', err));
         }
     }
+    async getAccess(id) { 
+        const database = this._envFile.mysql.database; 
+        const sql = `SELECT * FROM ${database}.access WHERE id = ?`; 
+        try { 
+            const result = await this._handleDBMSMySQL.query(sql, [id]); 
+            return result.data; 
+        } catch (error) { 
+            throw error; 
+        } 
+    }
 }
+
 
 module.exports = ModelAccess;
