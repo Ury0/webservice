@@ -16,22 +16,18 @@ class ModelAccess {
         if (typeof timestamp !== 'string' || timestamp === null) this.destroy(timestamp);
         if (typeof hostname !== 'string' || hostname === null) this.destroy(hostname);
         if (typeof ip !== 'string' || ip === null) this.destroy(ip);
+        
+        const database = this._envFile.mysql.database; // Certifique-se de que está pegando o database corretamente
         const table = 'access';
-        const sqlInsert = `INSERT INTO ${this._envFile.database}.${table} (timestamp, hostname, ip) VALUES (?, ?, ?)`;
+        const sqlInsert = `INSERT INTO ${database}.${table} (timestamp, hostname, ip) VALUES (?, ?, ?)`;
+        
         try {
-            console.log("acho q vai dar errado");
             await this._handleDBMSMySQL.query(sqlInsert, [timestamp, hostname, ip]);
         } catch (error) {
-            if (error.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
-                console.error('Erro fatal no protocolo, tentando reconectar...');
-                this._handleDBMSMySQL.connect(); // Tenta reconectar
-                await this._handleDBMSMySQL.query(sqlInsert, [timestamp, hostname, ip]);
-            } else {
-                console.error('Erro ao inserir o acesso no banco de dados:', error);
-                throw error;
-            }
+            console.error('Erro ao inserir o acesso no banco de dados:', error);
+            throw error;
         } finally {
-            await this._handleDBMSMySQL.close();
+            await this._handleDBMSMySQL.close().catch((err) => console.error('Erro ao fechar a conexão:', err));
         }
     }
 }
